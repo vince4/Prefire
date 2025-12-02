@@ -92,3 +92,15 @@ struct GreenButton_Previews: PreviewProvider, PrefireProvider {
         .snapshot(delay: 0.1, precision: 0.9)
         .previewUserStory(.auth)
 }
+
+#Preview("ViewBuilder Preview") {
+    TestView(isLoading: false)
+    
+    TestView(isLoading: true)
+    
+    Button("Apply", action: {})
+        .foregroundColor(.black)
+        .font(.title)
+        .padding()
+        .background(Capsule().foregroundColor(.green.opacity(0.2)))
+}
