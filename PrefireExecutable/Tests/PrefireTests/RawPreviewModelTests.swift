@@ -201,4 +201,42 @@ class RawPreviewModelTests: XCTestCase {
         XCTAssertEqual(rawPreviewModel?.displayName, "Test")
         XCTAssertEqual(rawPreviewModel?.traits, [".device"])
     }
+    
+    func test_noReturnStatement() {
+        let src = """
+        #Preview {
+            Text("Hello")
+        }
+
+        """
+        let model = RawPreviewModel(from: src, filename: "Test")
+        XCTAssertEqual(model?.hasReturnStatement, false)
+    }
+
+    func test_withReturnStatement() {
+        let src = """
+        #Preview {
+            let vc = UIViewController()
+            vc.view.backgroundColor = .red; return vc
+            print("not last")
+        }
+
+        """
+        let model = RawPreviewModel(from: src, filename: "Test")
+        XCTAssertEqual(model?.hasReturnStatement, true)
+    }
+    
+    func test_returnStatementInClosure() {
+        let src = """
+        #Preview {
+            [1,2,3].filter { value in
+                return value > 1
+            }
+            Text("Hello")
+        }
+
+        """
+        let model = RawPreviewModel(from: src, filename: "Test")
+        XCTAssertEqual(model?.hasReturnStatement, false)
+    }
 }
