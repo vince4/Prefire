@@ -57,7 +57,7 @@ public struct PreviewModel: Identifiable {
     @MainActor
     public init(
         id: String? = nil,
-        @ViewBuilder content: @escaping @MainActor () -> any View,
+        @ViewBuilder content: @escaping @MainActor () -> some View,
         name: String,
         type: LayoutType = .component,
         device: PreviewDevice? = nil,
@@ -72,6 +72,7 @@ public struct PreviewModel: Identifiable {
     }
 
     @MainActor
+    @_disfavoredOverload
     public init(
         id: String? = nil,
         content: @escaping () -> UIView,
@@ -83,6 +84,7 @@ public struct PreviewModel: Identifiable {
     }
 
     @MainActor
+    @_disfavoredOverload
     public init(
         id: String? = nil,
         content: @escaping () -> UIViewController,

@@ -3,6 +3,7 @@ import SwiftSyntax
 final class PreviewParser: SyntaxVisitor {
     private(set) var body: String?
     private(set) var properties: [String] = []
+    private(set) var hasReturnStatement: Bool = false
     
     enum Constants {
         static let previewable = "Previewable"
@@ -30,6 +31,11 @@ final class PreviewParser: SyntaxVisitor {
         }
         
         appendItemToBody(node)
+        
+        if node.item.is(ReturnStmtSyntax.self) {
+            hasReturnStatement = true
+        }
+        
         return .skipChildren
     }
 }

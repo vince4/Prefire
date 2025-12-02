@@ -69,18 +69,24 @@ import SnapshotTesting
             {{ macroModel.body|indent:12 }}
             }
         }
-        let preview = PreviewWrapper{{ macroModel.componentTestName }}.init
+        let preview = PreviewWrapper{{ macroModel.componentTestName }}.init()
         {% else %}
+        {% if macroModel.hasReturnStatement %}
         let preview = {
-        {{ macroModel.body|indent:8 }}
+            {{ macroModel.body|indent:8 }}
+        }()
+        {% else %}
+        @ViewBuilder var preview: some View {
+            {{ macroModel.body|indent:8 }}
         }
         {% endif %}
-        {% if macroModel.isScreen == 1 %}
+        {% endif %}
+        {% if macroModel.isScreen %}
         let isScreen = true
         {% else %}
         let isScreen = false
         {% endif %}
-        if let failure = assertSnapshots(for: PrefireSnapshot(preview(), name: "{{ macroModel.displayName }}", isScreen: isScreen, device: deviceConfig)) {
+        if let failure = assertSnapshots(for: PrefireSnapshot(preview, name: "{{ macroModel.displayName }}", isScreen: isScreen, device: deviceConfig)) {
             XCTFail(failure)
         }
     }
