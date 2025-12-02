@@ -6,6 +6,7 @@ struct RawPreviewModel {
     var traits: [String]
     var body: String
     var properties: String?
+    var hasReturnStatement: Bool
 
     var isScreen: Bool {
         traits.contains(Constants.defaultTrait)
@@ -70,6 +71,7 @@ extension RawPreviewModel {
         }
         
         body = previewParser.body ?? ""
+        hasReturnStatement = previewParser.hasReturnStatement
     }
     
     /// Parse traits from the raw trait string
@@ -197,7 +199,8 @@ extension RawPreviewModel {
             "isScreen": isScreen,
             "body": body,
             "properties": properties,
-            "traits": traits
+            "traits": traits,
+            "hasReturnStatement": hasReturnStatement
         ].filter({ $0.value != nil })
     }
 }
